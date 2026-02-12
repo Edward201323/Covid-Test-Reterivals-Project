@@ -1,0 +1,87 @@
+1. Analysis of Dictionary Methods
+
+Fill in the asymptotic complexities of the different implementations/methods below.
+In all of them, we consider the number of key comparisons, and we let "n" refer to the number of records in the dictionary.
+
+UnsortedArrayDictionary
+* find
+    * worst case:   O(n)
+    * average case: O(n)
+* insert
+    * worst case:   O(n)
+    * average case: O(n)
+* remove
+    * worst case:   O(n)
+    * average case: O(n)
+
+HashTableClosed
+* find
+    * worst case:   O(n) (due to clustering from linear probing or a high load factor, you may need to probe every slot before finding the key/determining it's not present.)
+    * average case: O(1) (with a good hash function, the number of probes required to find a key is constant)
+* insert
+    * worst case:   O(n) (when the table is nearly full or there are long clusters, you may need to probe many slots before finding an empty slot)
+    * average case: O(1) (an empty slot is found after a constant number of probes due to uniform hashing)
+* remove
+    * worst case:   O(n) (you may need to probe many slots to locate the key to remove, especially if there are clusters)
+    * average case: O(1) (the key to be removed is found after a constant number of probes, thanks to uniform key distribution)
+
+HashTableOpened
+* find
+    * worst case:   O(n) (all keys could hash to the same bucket, forming a single linked list of length n, requiring traversal of n nodes to find the key)
+    * average case: O(1) (with a good hash function distributing keys uniformly, the average linked list length is short, so finding a key requires traversing only a few nodes)
+* insert
+    * worst case:   O(n) (all keys could hash to the same bucket, creating a single linkedlist of length n, requiring traversal of n nodes to check for duplicates before inserting)
+    * average case: O(1) (the linked lists are short due to uniform distribution of keys, so checking for duplicates and inserting is quick)
+* remove
+    * worst case:   O(n) (all keys could hash to the same bucket, creating a single linkedlist of length n, so removing a key may require traversing up to n nodes)
+    * average case: O(1) (typically, linked lists are short, so the key to remove is found quickly with minimal traversal)
+
+
+2. Analysis of USPS Simulator
+Your simulator uses these Dictionary methods above.
+Provide the asymptotic complexity of the entire simulation.
+This time, "n" refers to how many orders the simulator is processing.
+
+When using the UnsortedArrayDictionary:
+* worst case: O(n^2): For each of the n orders, operations like 'find' and 'insert' take O(n), leading to a total of O(n) * O(n) = O(n^2).
+* average case: O(n^2): Even on average, the operations are O(n), resulting in O(n^2) overall.
+
+When using the HashTableClosed:
+* worst case: O(n^2): Due to possible clustering and collisions, each dictionary operation could take O(n), leading to O(n) * O(n) = O(n^2).
+* average case: O(n): With a good hash function and low load factor, dictionary operations take O(1) on average, resulting in O(n) total time.
+
+When using the HashTableOpened:
+* worst case: O(n^2): If all elements hash to the same bucket, 'find' operations could take O(n), leading to O(n) * O(n) = O(n^2).
+* average case: O(n): With a good hash function and uniform distribution, dictionary operations are O(1) on average, leading to O(n) total time.
+
+Briefly justify your answers:
+The simulator processes each of the n orders, performing dictionary operations ('find', 'insert', 'remove') for each. Therefore, the total time 
+complexity is the number of orders (n) multiplied by the time complexity of the dictionary operations. In the worst-case scenarios, where dictionary 
+operations are O(n), this results in O(n^2) total time. In average-case scenarios, where unsorted array operaitons are O(n), the total time is O(n^2).
+In average-case scenarios, where dictionary operations are O(1), the total time is O(n).
+
+
+3. Experimental Results and Summary
+
+Fill in the table below with your experimental run times, in milliseconds:
+
+M          UnsortedArrayDictionary   HashTableClosed   HashTableOpened
+------------------------------------------------------------------------
+    10       0 ms                     0 ms              0 ms
+   100       0 ms                     0 ms              0 ms
+ 1,000       4 ms                     3 ms              3 ms
+10,000     111 ms                    25 ms             18 ms
+100,000 11,307 ms                   146 ms            138 ms
+
+Briefly describe the trends you see.
+Explain them by referring to your asymptotic analyses above.
+2-3 sentences:
+
+As the number of orders 'M' increases, the UnsortedArrayDictionary has a rapid increase in runtime, indicative of its quadratic time complexity (O(n^2)). 
+This is evident from the significant jump from 111 ms at 10,000 orders to 11,307 ms at 100,000 orders. The linear-time dictionary operations ('find', 'insert'), 
+performed for each order, result in poor scalability.
+
+In contrast, both HashTableClosed and HashTableOpened demonstrate much lower and more gradually increasing runtimes, consistent with their average-case 
+linear time complexity (O(n)). Their runtimes increase proportionally with the number of orders, reflecting efficient handling of dictionary operations in 
+constant average time (O(1)). This allows the simulator to process large datasets quickly, showcasing the superiority of hash tables over unsorted arrays in 
+terms of performance and scalability for this application.

@@ -1,0 +1,7 @@
+.vscode/
+build/
+.project
+*.gch
+.DS_Store
+*.out
+*.exe
